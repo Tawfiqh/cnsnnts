@@ -1,7 +1,9 @@
 <!-- TODO
-1. Fix alignment on input box
-2. Make everything bigger
-3. add a box at the top indicating how many points it is.
+✅ 1. Fix alignment on input box
+✅2. Fix algorithm for scoring
+3. Make everything bigger
+✅ 4. Add a box at the top indicating how many points a column is.
+5. Limit to only 2 of each letter and only 2 special chars
 
 
 -->
@@ -46,6 +48,20 @@
             border-radius: 5px;
             position: relative;
         }
+        .scores{
+            border: 2px solid #061526;
+            background-color: #061526;
+            color: #f5edcc;
+        }
+        
+        .scores::after {
+            content: '\25BC';  /* Unicode for down triangle */
+            position: absolute;
+            bottom: -16px;
+            font-size: 12px;
+            color: #061526;
+        }
+        
         .letter.uncommon { background-color: #ffcccb; }
         .letter.very-uncommon { background-color: #ffa07a; }
         .bonus {
@@ -73,23 +89,32 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="board" id="board"></div>
+        <div class="board">
+            <div class="letter scores">5</div>
+            <div class="letter scores">4</div>
+            <div class="letter scores">3</div>
+            <div class="letter scores">2</div>
+        </div>
+        
+        <div class="board" id="board">
+            
+        </div>
         <input type="text" id="wordInput" placeholder="Enter your word">
         <div id="score">Score: 0</div>
     </div>
-
+    
     <script>
         const consonants = 'BCDFGHJKLMNPQRSTVWXYZ';
         const uncommonLetters = ['F', 'V', 'W'];
         const veryUncommonLetters = ['Q', 'X'];
-        const columnScores = [2, 3, 4, 5];
+        const columnScores = [5, 4, 3, 2];
         let currentBoard = [];
-
+        
         function generateBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
             currentBoard = [];
-
+            
             // Pick 8 letters
             for (let i = 0; i < 8; i++) {
                 const letter = consonants[Math.floor(Math.random() * consonants.length)];
@@ -98,7 +123,7 @@
                 const letterDiv = document.createElement('div');
                 letterDiv.className = 'letter';
                 letterDiv.textContent = letter;
-
+                
                 // Add styling for uncommonLetters
                 if (uncommonLetters.includes(letter)) {
                     letterDiv.classList.add('uncommon');
@@ -116,19 +141,19 @@
                     bonusSpan.textContent = '+2';
                     letterDiv.appendChild(bonusSpan);
                 }
-
+                
                 board.appendChild(letterDiv);
             }
         }
-
+        
         function copyScoreBoard(lettersBoard){
-
+            
             scoreBoard = []
-
+            
             for (i = 0; i < lettersBoard.length; i++) {
                 let letterScore = columnScores[i % 4]
                 const letter = lettersBoard[i]
-
+                
                 if (uncommonLetters.includes(letter)) {
                     letterScore += 1;
                 } else if (veryUncommonLetters.includes(letter)) {
@@ -137,41 +162,46 @@
                 
                 scoreBoard.push( [letter,letterScore] )
             }
-
+            
             return scoreBoard
         }
-
+        
         function scoreWord(word) {
-            let totalScore = 0;
-            const usedLetters = new Set();
+            totalScore = 0;
             
             let scoreBoard = copyScoreBoard(currentBoard)
+            console.log("original ScoreBoard:", scoreBoard.map(a=>a[0]))
+            
             word = word.toUpperCase()
+            
             for (let i = 0; i < word.length; i++) {
                 const letter = word[i].toUpperCase();
                 const scoredLetter = scoreBoard.find( a => {
                     return a[0] == letter
                 })
-                console.log("letter found!:",scoredLetter)
+                
+                console.log("letter found!:", scoredLetter)
                 
                 if (scoredLetter != null) {
-                    console.log("Scoring", scoredLetter, " current total is:",totalScore)
                     totalScore = totalScore + scoredLetter[1]
+                    console.log("Scoring", scoredLetter[1], " current total is:",totalScore)
                     
                     const index = scoreBoard.indexOf(scoredLetter);
-                    scoreBoard = scoreBoard.splice(index, 1);
+                    scoreBoard.splice(index, 1);
+                    console.log(scoreBoard.map(a=>a[0]))
                 }
             }
-
-            return score;
+            
+            return totalScore;
         }
-
+        
         document.getElementById('wordInput').addEventListener('input', function() {
             const word = this.value;
             const score = scoreWord(word);
+            console.log("Scored word as:", score)
             document.getElementById('score').textContent = `Score: ${score}`;
         });
-
+        
         generateBoard();
     </script>
 </body>
