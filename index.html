@@ -1,7 +1,7 @@
 <!-- TODO
 ✅ 1. Fix alignment on input box
 ✅2. Fix algorithm for scoring
-3. Make everything bigger
+✅3. Make everything bigger
 ✅ 4. Add a box at the top indicating how many points a column is.
 5. Limit to only 2 of each letter and only 2 special chars
 
@@ -28,6 +28,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transform: scale(var(--vw-scale));
+
         }
         .board {
             display: grid;
@@ -203,6 +205,15 @@
         });
         
         generateBoard();
+
+        // https://stackoverflow.com/questions/52467896/transform-scale-using-viewport-units
+        function setVwScale(){
+            const range = 1 / 400;
+            document.documentElement.style.setProperty('--vw-scale', `${range * Math.min(window.innerWidth, window.innerHeight)}`);
+        }
+        setVwScale()
+
+        window.addEventListener('resize', setVwScale);
     </script>
 </body>
 </html>
