@@ -29,7 +29,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             transform: scale(var(--vw-scale));
-
+            
         }
         .board {
             display: grid;
@@ -116,25 +116,45 @@
             const board = document.getElementById('board');
             board.innerHTML = '';
             currentBoard = [];
+            let letterCounts = {};
+            let uncommonCount = 0;
             
             // Pick 8 letters
-            for (let i = 0; i < 8; i++) {
+            while (currentBoard.length < 8) {
                 const letter = consonants[Math.floor(Math.random() * consonants.length)];
-                // Array to keep our letters
+                
+                // Check if we've already used this letter twice
+                if (letterCounts[letter] && letterCounts[letter] >= 2) {
+                    continue;
+                }
+                
+                // Check if it's an uncommon or very uncommon letter
+                const isUncommon = uncommonLetters.includes(letter) || veryUncommonLetters.includes(letter);
+                
+                // If it's uncommon, check if we've already got two uncommon letters
+                if (isUncommon && uncommonCount >= 2) {
+                    continue;
+                }
+                
+                // Add the letter to the board
                 currentBoard.push(letter);
+                
+                // Update our counter for each letter and each uncommon letters
+                letterCounts[letter] = (letterCounts[letter] || 0) + 1;
+                if (isUncommon) uncommonCount++;
+                
                 const letterDiv = document.createElement('div');
                 letterDiv.className = 'letter';
                 letterDiv.textContent = letter;
-                
-                // Add styling for uncommonLetters
+
+                // Add styling for uncommonLetters                
                 if (uncommonLetters.includes(letter)) {
                     letterDiv.classList.add('uncommon');
                     const bonusSpan = document.createElement('span');
                     bonusSpan.className = 'bonus';
                     bonusSpan.textContent = '+1';
                     letterDiv.appendChild(bonusSpan);
-                    
-                } 
+                }                
                 // Add styling for veryUncommonLetters !!
                 else if (veryUncommonLetters.includes(letter)) {
                     letterDiv.classList.add('very-uncommon');
@@ -205,14 +225,14 @@
         });
         
         generateBoard();
-
+        
         // https://stackoverflow.com/questions/52467896/transform-scale-using-viewport-units
         function setVwScale(){
             const range = 1 / 400;
             document.documentElement.style.setProperty('--vw-scale', `${range * Math.min(window.innerWidth, window.innerHeight)}`);
         }
         setVwScale()
-
+        
         window.addEventListener('resize', setVwScale);
     </script>
 </body>
