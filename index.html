@@ -118,7 +118,7 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             top: 10px;
             right: 10px;
         }
-
+        
         .info-icon {
             width: 24px;
             height: 24px;
@@ -149,6 +149,10 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             margin-bottom: 0;
         }
         
+        li{
+            padding-bottom: 13px;
+        }
+        
         :popover-open {
             position: absolute;
             inset: unset;
@@ -166,9 +170,11 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             <h3>Game Rules:</h3>
             <ul>
                 <li>Create words using the 8 displayed letters</li>
-                <li>Add any other letters or vowels as needed (even if not shown)</li>
-                <li>Score points only for letters on the board, each counted once</li>
+                <li>Add any other letters or vowels as needed (even if not shown) to complete your word!</li>
+                <li>Score points <b>only</b> for letters on the board (if a letter appears twice you get scored for it twice).</li>
+                <!-- <li>Calculate each player's score by typing it in</li> -->
             </ul>
+            <p>The player with the highest score wins!</p>
         </div>
     </div>
     
@@ -183,7 +189,7 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         <div class="board" id="board">
             
         </div>
-        <input type="text" id="wordInput" placeholder="Enter your word">
+        <input type="text" id="wordInput" placeholder="Enter your word to find your score">
         <div id="score">Score: 0</div>
     </div>
     
