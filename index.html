@@ -127,6 +127,7 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             top: 10px;
             right: 10px;
         }
+
         .info-icon {
             width: 24px;
             height: 24px;
@@ -157,21 +158,12 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             margin-bottom: 0;
         }
         
-        .popover {
-            display: none;
+        :popover-open {
             position: absolute;
-            top: 100%;
-            right: 0;
-            width: 250px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
-        .info-container:hover .popover {
-            display: block;
+            inset: unset;
+            top: 10px;
+            right: 45px;
+            margin: 0;
         }
         
     </style>
@@ -179,7 +171,7 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
 <body>
     <div class="info-container">
         <button class="info-icon" popovertarget="rulesPopover">i</button>
-        <div id="rulesPopover" popover>
+        <div id="rulesPopover" popover class="rules-popover">
             <h3>Game Rules:</h3>
             <ul>
                 <li>Create words using the 8 displayed letters</li>
