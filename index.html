@@ -120,61 +120,9 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             font-size: 18px;
             font-weight: bold;
         }
-
-        /* Info Container bits */
-        .info-container {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-        }
-        .info-icon {
-            width: 24px;
-            height: 24px;
-            background-color: #ccc;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: help;
-        }
-        .popover {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 250px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
-        .info-container:hover .popover {
-            display: block;
-        }
-        .popover h3 {
-            margin-top: 0;
-        }
-        .popover ul {
-            padding-left: 20px;
-            margin-bottom: 0;
-        }
     </style>
 </head>
 <body>
-    <div class="info-container">
-        <div class="info-icon">i</div>
-        <div class="popover">
-            <h3>Game Rules:</h3>
-            <ul>
-                <li>Create words using the 8 displayed letters</li>
-                <li>Add any other letters or vowels as needed (even if not shown)</li>
-                <li>Score points only for letters on the board, each counted once</li>
-            </ul>
-        </div>
-    </div>
     <div class="game-container">
         <div class="board">
             <div class="letter scores">5</div>
