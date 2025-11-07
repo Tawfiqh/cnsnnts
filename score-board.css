@@ -1,0 +1,27 @@
+/* Scoring list - side box */
+.scored-words-box {
+    width: 100%;
+    max-width: 300px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    overflow-y: auto;
+    order: 2;
+}
+
+.scored-words-box h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+#scoredWordsList {
+    font-size: 14px;
+}
+
+.scored-word-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
