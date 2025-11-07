@@ -10,6 +10,29 @@
     order: 2;
 }
 
+.scoring-input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.scoring-input-row input {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.scoring-input-row #score {
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    min-width: 70px;
+    text-align: right;
+}
+
 .scored-words-box h3 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -23,5 +46,6 @@
 .scored-word-item {
     padding: 5px 0;
     border-bottom: 1px solid #eee;
+    text-transform: capitalize;
 }
 

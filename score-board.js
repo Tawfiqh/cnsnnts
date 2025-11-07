@@ -23,7 +23,7 @@ function saveWord(word) {
     
     const score = scoreWord(word);
     scoredWords.push({
-        word: word.toUpperCase(),
+        word: word ,
         score: score
     });
     updateScoredWordsList();

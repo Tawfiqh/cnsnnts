@@ -10,9 +10,9 @@
 ✅ 9. Highlight the letters on the board that have been used in the input word
 ✅ 10. refresh button for a new round??
 ✅ 11. Timer looks cooler
-12. Move scoring to be in the top of scored-words box
+✅ 12. Move scoring to be in the top of scored-words box
 ✅ 13. Refactor into smaller files
-Make bell jiggle fade out when it vanishes
+✅ Make bell jiggle fade out when it vanishes
 -->
 
 
@@ -83,11 +83,13 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             </div>
             <div class="bell-overlay" id="bellOverlay">🔔</div>
         </div>
-        <input type="text" id="wordInput" placeholder="Enter your word to find your score">
-        <div id="score">Score: 0</div>
         </div>
         
         <div class="scored-words-box">
+            <div class="scoring-input-row">
+                <input type="text" id="wordInput" placeholder="Enter your word to find your score">
+                <div id="score">Score: 0</div>
+            </div>
             <h3>Scored Words</h3>
             <div id="scoredWordsList"></div>
         </div>
