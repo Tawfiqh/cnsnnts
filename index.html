@@ -161,11 +161,115 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             margin: 0;
         }
         
+        /* Timer styles */
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+        
+        #timerDisplay {
+            font-size: 24px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        #startTimer {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        #startTimer:hover {
+            background-color: #45a049;
+        }
+        
+        #startTimer:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Bell overlay */
+        .bell-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-size: 120px;
+        }
+        
+        .bell-overlay.show {
+            display: flex;
+        }
+        
+        .bell-overlay.jiggle {
+            animation: jiggle 0.5s infinite;
+        }
+        
+        @keyframes jiggle {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-10deg) scale(1.1); }
+            50% { transform: rotate(10deg) scale(1.2); }
+            75% { transform: rotate(-5deg) scale(1.1); }
+        }
+        
+        .board-container {
+            position: relative;
+        }
+        
+        /* Scoring list */
+        #scoredWordsList {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        
+        .scored-word-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Reset button */
+        .reset-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+        
+        .reset-icon:hover {
+            background-color: #aaa;
+        }
+        
     </style>
 </head>
 <body>
     <div class="info-container">
         <button class="info-icon" popovertarget="rulesPopover">i</button>
+        <button class="reset-icon" id="resetButton" title="Reset Game">↻</button>
         <div id="rulesPopover" popover class="rules-popover">
             <h3>Game Rules:</h3>
             <ul>
@@ -179,6 +283,11 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
     </div>
     
     <div class="game-container">
+        <div class="timer-container">
+            <button id="startTimer">Start Timer</button>
+            <div id="timerDisplay">30</div>
+        </div>
+        
         <div class="board">
             <div class="letter scores">5</div>
             <div class="letter scores">4</div>
@@ -186,11 +295,15 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             <div class="letter scores">2</div>
         </div>
         
-        <div class="board" id="board">
-            
+        <div class="board-container">
+            <div class="board" id="board">
+                
+            </div>
+            <div class="bell-overlay" id="bellOverlay">🔔</div>
         </div>
         <input type="text" id="wordInput" placeholder="Enter your word to find your score">
         <div id="score">Score: 0</div>
+        <div id="scoredWordsList"></div>
     </div>
     
     <script>
@@ -200,6 +313,38 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         const columnScores = [5, 4, 3, 2];
         let currentBoard = [];
         
+        // Weighted letter distribution - common letters appear 3x more frequently
+        const commonConsonants = 'BCDFGHKLMNPRST'; // Common consonants
+        const rareConsonants = 'QXJZVWY'; // Rare consonants (already very uncommon)
+        
+        // Timer variables
+        let timerInterval = null;
+        let timeRemaining = 30;
+        let isTimerRunning = false;
+        
+        // Scoring list
+        let scoredWords = [];
+        
+        function getWeightedRandomLetter() {
+            // Create weighted array: common letters appear 3x more frequently
+            const weightedLetters = [];
+            
+            // Add common letters 3 times
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < commonConsonants.length; j++) {
+                    weightedLetters.push(commonConsonants[j]);
+                }
+            }
+            
+            // Add rare letters 1 time
+            for (let i = 0; i < rareConsonants.length; i++) {
+                weightedLetters.push(rareConsonants[i]);
+            }
+            
+            // Pick random letter from weighted array
+            return weightedLetters[Math.floor(Math.random() * weightedLetters.length)];
+        }
+        
         function generateBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
@@ -207,9 +352,9 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             let letterCounts = {};
             let uncommonCount = 0;
             
-            // Pick 8 letters
+            // Pick 8 letters using weighted distribution
             while (currentBoard.length < 8) {
-                const letter = consonants[Math.floor(Math.random() * consonants.length)];
+                const letter = getWeightedRandomLetter();
                 
                 // Check if we've already used this letter twice
                 if (letterCounts[letter] && letterCounts[letter] >= 2) {
@@ -306,11 +451,107 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             return totalScore;
         }
         
+        // Timer functions
+        function startTimer() {
+            if (isTimerRunning) return;
+            
+            isTimerRunning = true;
+            timeRemaining = 30;
+            document.getElementById('startTimer').disabled = true;
+            document.getElementById('timerDisplay').textContent = timeRemaining;
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                document.getElementById('timerDisplay').textContent = timeRemaining;
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    isTimerRunning = false;
+                    showBellOverlay();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isTimerRunning = false;
+            timeRemaining = 30;
+            document.getElementById('timerDisplay').textContent = timeRemaining;
+            document.getElementById('startTimer').disabled = false;
+        }
+        
+        function showBellOverlay() {
+            const overlay = document.getElementById('bellOverlay');
+            overlay.classList.add('show', 'jiggle');
+        }
+        
+        function hideBellOverlay() {
+            const overlay = document.getElementById('bellOverlay');
+            overlay.classList.remove('show', 'jiggle');
+        }
+        
+        // Scoring list functions
+        function updateScoredWordsList() {
+            const listContainer = document.getElementById('scoredWordsList');
+            listContainer.innerHTML = '';
+            
+            if (scoredWords.length === 0) {
+                return;
+            }
+            
+            scoredWords.forEach(item => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'scored-word-item';
+                wordItem.textContent = `${item.word}: ${item.score}`;
+                listContainer.appendChild(wordItem);
+            });
+        }
+        
+        function saveWord(word) {
+            if (!word || word.trim() === '') return;
+            
+            const score = scoreWord(word);
+            scoredWords.push({
+                word: word.toUpperCase(),
+                score: score
+            });
+            updateScoredWordsList();
+        }
+        
+        // Event listeners
+        document.getElementById('startTimer').addEventListener('click', startTimer);
+        
         document.getElementById('wordInput').addEventListener('input', function() {
             const word = this.value;
             const score = scoreWord(word);
             console.log("Scored word as:", score)
             document.getElementById('score').textContent = `Score: ${score}`;
+        });
+        
+        document.getElementById('wordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const word = this.value.trim();
+                if (word) {
+                    saveWord(word);
+                    this.value = '';
+                    document.getElementById('score').textContent = 'Score: 0';
+                }
+            }
+        });
+        
+        // Reset button
+        document.getElementById('resetButton').addEventListener('click', function() {
+            stopTimer();
+            scoredWords = [];
+            updateScoredWordsList();
+            generateBoard();
+            document.getElementById('wordInput').value = '';
+            document.getElementById('score').textContent = 'Score: 0';
+            hideBellOverlay();
         });
         
         generateBoard();
