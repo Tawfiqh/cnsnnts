@@ -11,7 +11,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 80px 10px 20px;
+    padding: 20px 10px;
     max-width: 1200px;
     margin: 0 auto;
     transform: scale(var(--vw-scale));
@@ -23,8 +23,6 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 300px;
 }
 
 .board {
@@ -125,10 +123,6 @@ input {
 
 /* Wide screens: side by side layout */
 @media (min-width: 900px) {
-    body {
-        padding: 80px 20px 20px;
-    }
-    
     .main-content {
         flex-direction: row;
         align-items: flex-start;
@@ -144,9 +138,9 @@ input {
     .scored-words-box {
         order: 1;
         width: 250px;
-        max-height: calc(100vh - 100px);
+        max-height: calc(100vh - 120px);
         position: sticky;
-        top: 80px;
+        top: 20px;
     }
 }
 

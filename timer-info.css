@@ -1,9 +1,16 @@
-/* Timer styles - floating above */
+/* Header row */
+.header-row {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Timer styles */
 .timer-box {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: white;
     padding: 10px 20px;
     border-radius: 10px;
@@ -11,7 +18,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    z-index: 100;
 }
 
 #timerDisplay {
@@ -25,27 +31,29 @@
 #startTimer {
     padding: 8px 16px;
     font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+
+    border: 1px solid #4A0E2E;
+    background-color: #061526;
+    color: #f5edcc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Courier New', monospace;
 }
 
 #startTimer:hover {
-    background-color: #45a049;
+    background-color: #ed8e68;
 }
 
 #startTimer:disabled {
     background-color: #ccc;
+    color: black;
     cursor: not-allowed;
 }
 
 /* Info panel */
 .info-container {
-    position: fixed;
-    top: 10px;
-    right: 10px;
     display: flex;
     gap: 5px;
     align-items: center;

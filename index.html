@@ -11,7 +11,7 @@
 ✅ 10. refresh button for a new round??
 11. Timer looks cooler
 12. Move scoring to be in the top of scored-words box
-13. Refactor into smaller files
+✅ 13. Refactor into smaller files
 -->
 
 
@@ -45,24 +45,26 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
     <link rel="stylesheet" href="score-board.css">
 </head>
 <body>
-    <div class="info-container">
-        <button class="info-icon" popovertarget="rulesPopover">i</button>
-        <button class="reset-icon" id="resetButton" title="Reset Game">↻</button>
-        <div id="rulesPopover" popover class="rules-popover">
-            <h3>Game Rules:</h3>
-            <ul>
-                <li>Create words using the 8 displayed letters</li>
-                <li>Add any other letters or vowels as needed (even if not shown) to complete your word!</li>
-                <li>Score points <b>only</b> for letters on the board (if a letter appears twice you get scored for it twice).</li>
-                <!-- <li>Calculate each player's score by typing it in</li> -->
-            </ul>
-            <p>The player with the highest score wins!</p>
+    <div class="header-row">
+        <div class="info-container">
+            <button class="info-icon" popovertarget="rulesPopover">i</button>
+            <button class="reset-icon" id="resetButton" title="Reset Game">↻</button>
+            <div id="rulesPopover" popover class="rules-popover">
+                <h3>Game Rules:</h3>
+                <ul>
+                    <li>Create words using the 8 displayed letters</li>
+                    <li>Add any other letters or vowels as needed (even if not shown) to complete your word!</li>
+                    <li>Score points <b>only</b> for letters on the board (if a letter appears twice you get scored for it twice).</li>
+                    <!-- <li>Calculate each player's score by typing it in</li> -->
+                </ul>
+                <p>The player with the highest score wins!</p>
+            </div>
         </div>
-    </div>
-    
-    <div class="timer-box">
-        <button id="startTimer">Start Timer</button>
-        <div id="timerDisplay">30</div>
+        
+        <div class="timer-box">
+            <button id="startTimer">Start Timer ⏱️</button>
+            <div id="timerDisplay">30</div>
+        </div>
     </div>
     
     <div class="main-content">
