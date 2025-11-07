@@ -9,6 +9,8 @@
 ✅ 8. Add a little (i) icon in the top right that explains how to play in 2 sentences
 9. Highlight the letters on the board that have been used in the input word
 10. refresh button for a new round??
+11. Timer looks cooler
+12. remove scoring to be in the top of scored-words box
 -->
 
 
@@ -117,6 +119,10 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             position: fixed;
             top: 10px;
             right: 10px;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-direction: row-reverse;
         }
         
         .info-icon {
@@ -161,20 +167,28 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             margin: 0;
         }
         
-        /* Timer styles */
-        .timer-container {
+        /* Timer styles - floating above */
+        .timer-box {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
-            justify-content: center;
+            z-index: 100;
         }
         
         #timerDisplay {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             min-width: 60px;
             text-align: center;
+            font-family: 'Courier New', monospace;
         }
         
         #startTimer {
@@ -230,11 +244,27 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             position: relative;
         }
         
-        /* Scoring list */
-        #scoredWordsList {
-            margin-top: 10px;
-            max-height: 150px;
+        /* Scoring list - side box */
+        .scored-words-box {
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            width: 200px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            max-height: calc(100vh - 80px);
             overflow-y: auto;
+        }
+        
+        .scored-words-box h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        #scoredWordsList {
             font-size: 14px;
         }
         
@@ -257,7 +287,6 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
             border: none;
             padding: 0;
             font-size: 16px;
-            margin-left: 5px;
         }
         
         .reset-icon:hover {
@@ -282,12 +311,17 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         </div>
     </div>
     
+    <div class="timer-box">
+        <button id="startTimer">Start Timer</button>
+        <div id="timerDisplay">30</div>
+    </div>
+    
+    <div class="scored-words-box">
+        <h3>Scored Words</h3>
+        <div id="scoredWordsList"></div>
+    </div>
+    
     <div class="game-container">
-        <div class="timer-container">
-            <button id="startTimer">Start Timer</button>
-            <div id="timerDisplay">30</div>
-        </div>
-        
         <div class="board">
             <div class="letter scores">5</div>
             <div class="letter scores">4</div>
@@ -303,7 +337,6 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         </div>
         <input type="text" id="wordInput" placeholder="Enter your word to find your score">
         <div id="score">Score: 0</div>
-        <div id="scoredWordsList"></div>
     </div>
     
     <script>
