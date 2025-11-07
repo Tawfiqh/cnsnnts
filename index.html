@@ -42,12 +42,20 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            background-color: #1A2A3A
+            padding: 0;
+            background-color: #1A2A3A;
+            min-height: 100vh;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 80px 10px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         .game-container {
             background-color: white;
@@ -246,16 +254,40 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         
         /* Scoring list - side box */
         .scored-words-box {
-            position: fixed;
-            top: 60px;
-            right: 10px;
-            width: 200px;
+            width: 100%;
+            max-width: 300px;
             background-color: white;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            max-height: calc(100vh - 80px);
             overflow-y: auto;
+            order: 2;
+        }
+        
+        /* Wide screens: side by side layout */
+        @media (min-width: 900px) {
+            body {
+                padding: 80px 20px 20px;
+            }
+            
+            .main-content {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            
+            .game-container {
+                order: 2;
+                flex: 0 0 auto;
+            }
+            
+            .scored-words-box {
+                order: 1;
+                width: 250px;
+                max-height: calc(100vh - 100px);
+                position: sticky;
+                top: 80px;
+            }
         }
         
         .scored-words-box h3 {
@@ -316,12 +348,8 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         <div id="timerDisplay">30</div>
     </div>
     
-    <div class="scored-words-box">
-        <h3>Scored Words</h3>
-        <div id="scoredWordsList"></div>
-    </div>
-    
-    <div class="game-container">
+    <div class="main-content">
+        <div class="game-container">
         <div class="board">
             <div class="letter scores">5</div>
             <div class="letter scores">4</div>
@@ -337,6 +365,12 @@ Use #F0F0F0 (Off-White) for headings or to create contrast against darker backgr
         </div>
         <input type="text" id="wordInput" placeholder="Enter your word to find your score">
         <div id="score">Score: 0</div>
+        </div>
+        
+        <div class="scored-words-box">
+            <h3>Scored Words</h3>
+            <div id="scoredWordsList"></div>
+        </div>
     </div>
     
     <script>
