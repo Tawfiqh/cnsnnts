@@ -39,11 +39,22 @@ function stopTimer() {
 function showBellOverlay() {
     const overlay = document.getElementById('bellOverlay');
     overlay.classList.add('show', 'jiggle');
+    
+    // Automatically hide the bell overlay after 1.2 seconds
+    setTimeout(() => {
+        hideBellOverlay();
+    }, 1200);
 }
 
 function hideBellOverlay() {
     const overlay = document.getElementById('bellOverlay');
-    overlay.classList.remove('show', 'jiggle');
+    // Add fade-out class to trigger opacity transition
+    overlay.classList.add('fade-out');
+    
+    // Remove all classes after fade-out transition completes
+    setTimeout(() => {
+        overlay.classList.remove('show', 'jiggle', 'fade-out');
+    }, 300); // Match the transition duration (0.3s)
 }
 
 // Timer event listener

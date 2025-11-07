@@ -37,6 +37,7 @@ document.getElementById('wordInput').addEventListener('keypress', function(e) {
             saveWord(word);
             this.value = '';
             document.getElementById('score').textContent = 'Score: 0';
+            clearHighlights(); // Clear highlights when word is saved
         }
     }
 });

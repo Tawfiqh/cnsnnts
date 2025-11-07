@@ -4,6 +4,7 @@ const uncommonLetters = ['F', 'V', 'W'];
 const veryUncommonLetters = ['Q', 'X'];
 const columnScores = [5, 4, 3, 2];
 let currentBoard = [];
+let letterElements = []; // Store references to letter div elements for highlighting
 
 // Weighted letter distribution - common letters appear 3x more frequently
 const commonConsonants = 'BCDFGHKLMNPRST'; // Common consonants
@@ -33,6 +34,7 @@ function generateBoard() {
     const board = document.getElementById('board');
     board.innerHTML = '';
     currentBoard = [];
+    letterElements = []; // Reset letter element references
     let letterCounts = {};
     let uncommonCount = 0;
     
@@ -63,6 +65,12 @@ function generateBoard() {
         const letterDiv = document.createElement('div');
         letterDiv.className = 'letter';
         letterDiv.textContent = letter;
+        
+        // Store reference to letter element for highlighting
+        letterElements.push({
+            letter: letter,
+            element: letterDiv
+        });
         
         // Add styling for uncommonLetters                
         if (uncommonLetters.includes(letter)) {
@@ -134,12 +142,54 @@ function scoreWord(word) {
     return totalScore;
 }
 
+// Clear all letter highlights
+function clearHighlights() {
+    letterElements.forEach(item => {
+        item.element.classList.remove('used');
+    });
+}
+
+// Highlight letters used in the input word (matching scoring logic)
+function highlightUsedLetters(word) {
+    // Clear all previous highlights
+    clearHighlights();
+    
+    if (!word || word.trim() === '') {
+        return;
+    }
+    
+    // Create a copy of available letters (matching scoring logic)
+    let availableLetters = [];
+    letterElements.forEach(item => {
+        availableLetters.push({
+            letter: item.letter,
+            element: item.element
+        });
+    });
+    
+    word = word.toUpperCase();
+    
+    // For each letter in the word, find and highlight a matching letter from the board
+    for (let i = 0; i < word.length; i++) {
+        const letter = word[i].toUpperCase();
+        const matchedIndex = availableLetters.findIndex(item => item.letter === letter);
+        
+        if (matchedIndex !== -1) {
+            // Highlight the matched letter
+            availableLetters[matchedIndex].element.classList.add('used');
+            // Remove it from available letters (so duplicates work correctly)
+            availableLetters.splice(matchedIndex, 1);
+        }
+    }
+}
+
 // Word input event listeners
 document.getElementById('wordInput').addEventListener('input', function() {
     const word = this.value;
     const score = scoreWord(word);
     console.log("Scored word as:", score)
     document.getElementById('score').textContent = `Score: ${score}`;
+    highlightUsedLetters(word); // Highlight letters used in the word
 });
 
 // Viewport scaling functions
