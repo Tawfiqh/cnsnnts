@@ -10,7 +10,10 @@ function updateScoredWordsList() {
         return;
     }
     
-    scoredWords.forEach(item => {
+    // Sort scored words by score descending
+    const sortedWords = [...scoredWords].sort((a, b) => b.score - a.score);
+    
+    sortedWords.forEach(item => {
         const wordItem = document.createElement('div');
         wordItem.className = 'scored-word-item';
         wordItem.textContent = `${item.word}: ${item.score}`;
