@@ -195,8 +195,57 @@ document.getElementById('wordInput').addEventListener('input', function() {
 // Viewport scaling functions
 // https://stackoverflow.com/questions/52467896/transform-scale-using-viewport-units
 function setVwScale(){
-    const range = 1 / 400;
-    document.documentElement.style.setProperty('--vw-scale', `${range * Math.min(window.innerWidth, window.innerHeight)}`);
+    //const range = 1 / 400;
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    
+    var scaleValue;
+    var scaleFactor;
+    var orientation = width > height ? "landscape" : "portrait";
+    var scalingDimension;
+    
+    if (width >= 900) { // Side by side layout when > 900px wide
+        if (orientation == "portrait") { // narrow screen = stacked layout
+            // Taller screen (portrait) - scale based on width as that is the limiting factor
+            scaleFactor = 1 / 750;
+            scalingDimension = width;
+            scalingDimensionName = "width";
+
+        } else { // landscape scaling = height scaling
+            // Taller screen (portrait) - scale based on height as that is the limiting factor
+            scaleFactor = 1 / 650;
+            scalingDimension = height;
+            scalingDimensionName = "height";
+        }
+        scaleValue = 1.3;
+
+    }
+    else{ //Column view when < 900px wide ✅
+         if (orientation == "portrait") { // narrow screen = stacked layout
+            // Taller screen (portrait) - scale based on width as that is the limiting factor
+            scaleFactor = 1 / 400;
+            scalingDimension = width;
+            scalingDimensionName = "width";
+        } else { // landscape scaling = height scaling
+            // Taller screen (portrait) - scale based on height as that is the limiting factor
+            scaleFactor = 1 / 400;
+            scalingDimension = height;
+            scalingDimensionName = "height";
+        }
+        scaleValue = scaleFactor * scalingDimension;
+
+    }
+    
+    // Enhanced debug logging
+    console.log("\n\n=== VW Scale Debug ===");
+    console.log("Window dimensions:", { width, height });
+    console.log("Orientation:", orientation, "scaling based on", scalingDimensionName);
+    console.log("Scale factor:", scaleFactor, `(1/${1/scaleFactor})`);
+    console.log("Calculation:", `${scaleFactor} × ${scalingDimension} = ${scaleValue}`);
+    console.log("Final scaleValue:", scaleValue);
+    console.log("========================");
+    
+    document.documentElement.style.setProperty('--vw-scale', scaleValue);
 }
 setVwScale()
 

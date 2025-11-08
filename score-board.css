@@ -15,14 +15,18 @@
     gap: 10px;
     align-items: center;
     margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .scoring-input-row input {
     flex: 1;
+    min-width: 0;
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .scoring-input-row #score {
